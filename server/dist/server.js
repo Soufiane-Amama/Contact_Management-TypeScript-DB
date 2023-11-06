@@ -1,31 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const app = express();
-const mysql = require("mysql2");
-const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
+var express = require("express");
+var app = express();
+var mysql = require("mysql2");
+var bodyParser = require("body-parser");
+var dotenv = require("dotenv");
+var cors = require('cors');
 dotenv.config();
-const PORT = 3000;
+var PORT = process.env.PORT || 8000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-const path = require("path");
-const clientPath = path.join(__dirname, "../../client");
+var path = require("path");
+var clientPath = path.join(__dirname, "../../client");
 app.use(express.static(clientPath));
-const connection = mysql.createConnection({
+app.use(cors());
+// app.use(cors({
+//   origin: 'https://trading-max-app.vercel.app',
+//   credentials: true 
+// }));
+// =========================================
+var connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
-connection.connect((err, resul) => {
+connection.connect(function (err, resul) {
     if (err) {
         throw err;
     }
-    console.log(`Connected successfully to the database! ${resul}`);
+    console.log("Connected successfully to the database! ".concat(resul));
 });
-app.get("/contacts", (_req, res) => {
-    connection.query("SELECT id, name, email, phone FROM contacts", (err, result) => {
+// =========================================
+app.get("/contacts", function (_req, res) {
+    connection.query("SELECT id, name, email, phone FROM contacts", function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).json({ error: "Error fetching contacts" });
@@ -35,10 +46,10 @@ app.get("/contacts", (_req, res) => {
         }
     });
 });
-app.delete("/delete-contact/:id", (req, res) => {
-    const contactId = req.params.id;
-    const sqlQuery = "DELETE FROM contacts WHERE id = ?";
-    connection.query(sqlQuery, [contactId], (err, _result) => {
+app.delete("/delete-contact/:id", function (req, res) {
+    var contactId = req.params.id;
+    var sqlQuery = "DELETE FROM contacts WHERE id = ?";
+    connection.query(sqlQuery, [contactId], function (err, _result) {
         if (err) {
             console.log(err);
             res.status(500).send("Error deleting contact 👎");
@@ -49,10 +60,10 @@ app.delete("/delete-contact/:id", (req, res) => {
         }
     });
 });
-app.post("/add-contact", (req, res) => {
-    const { ContactName, ContactEmail, ContactPhone } = req.body;
-    const sqlQuery = "INSERT INTO contacts (name, email, phone, date_created) VALUES (?, ?, ?, NOW())";
-    connection.query(sqlQuery, [ContactName, ContactEmail, ContactPhone], (err, result) => {
+app.post("/add-contact", function (req, res) {
+    var _a = req.body, ContactName = _a.ContactName, ContactEmail = _a.ContactEmail, ContactPhone = _a.ContactPhone;
+    var sqlQuery = "INSERT INTO contacts (name, email, phone, date_created) VALUES (?, ?, ?, NOW())";
+    connection.query(sqlQuery, [ContactName, ContactEmail, ContactPhone], function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).send("Error adding new contact!");
@@ -63,7 +74,6 @@ app.post("/add-contact", (req, res) => {
         }
     });
 });
-app.listen(PORT, () => {
-    console.log(`Server has started on PORT ${PORT}...`);
+app.listen(PORT, function () {
+    console.log("Server has started on PORT ".concat(PORT, "..."));
 });
-//# sourceMappingURL=server.js.map

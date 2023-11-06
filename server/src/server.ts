@@ -5,11 +5,11 @@ const app = express();
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-
+const cors = require('cors');
 
 dotenv.config();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -18,13 +18,24 @@ const path = require("path");
 const clientPath = path.join(__dirname, "../../client");
 app.use(express.static(clientPath));
 
+
+app.use(cors());
+
+// app.use(cors({
+//   origin: 'https://trading-max-app.vercel.app',
+//   credentials: true
+// }));
+
 // =========================================
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 connection.connect((err, resul)=>{
