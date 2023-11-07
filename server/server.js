@@ -11,12 +11,12 @@ var PORT = process.env.PORT || 8000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 var path = require("path");
-var clientPath = path.join(__dirname, "../../client");
+var clientPath = path.join(__dirname, "../client");
 app.use(express.static(clientPath));
 app.use(cors());
 // app.use(cors({
 //   origin: 'https://trading-max-app.vercel.app',
-//   credentials: true 
+//   credentials: true
 // }));
 // =========================================
 var connection = mysql.createConnection({
