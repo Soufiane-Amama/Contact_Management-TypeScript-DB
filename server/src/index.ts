@@ -89,6 +89,12 @@ app.post("/add-contact", (req: Request, res: Response): Response => {
 });
 
 
+app.get('/hi', async (req, res) => {
+  res.send("Hello Soufiane!");
+});
+
+
+
 app.listen(PORT, ()=>{
   console.log(`Server has started on PORT ${PORT}...`);
 });

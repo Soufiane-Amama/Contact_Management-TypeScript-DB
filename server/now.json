@@ -6,6 +6,12 @@
         "use": "@vercel/node"
       }
     ],
+    "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "/"
+        }
+      ],
     "env": {
       "DB_HOST": "b7rj3b9kijlghpxt2j8b-mysql.services.clever-cloud.com",
       "DB_USER": "uaezgokc4nbstlcj",
