@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "./server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "env": {
+      "DB_HOST": "b7rj3b9kijlghpxt2j8b-mysql.services.clever-cloud.com",
+      "DB_USER": "uaezgokc4nbstlcj",
+      "DB_PASSWORD": "9fkEk2LfKrni6wwUpzLc",
+      "DB_NAME": "b7rj3b9kijlghpxt2j8b"
+    }
+}
