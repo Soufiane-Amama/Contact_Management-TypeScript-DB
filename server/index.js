@@ -50,10 +50,6 @@ var path = require("path");
 var clientPath = path.join(__dirname, "../client");
 app.use(express.static(clientPath));
 app.use(cors());
-// app.use(cors({
-//   origin: 'https://trading-max-app.vercel.app',
-//   credentials: true
-// }));
 // =========================================
 var connection = mysql.createConnection({
     host: process.env.DB_HOST,

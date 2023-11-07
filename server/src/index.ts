@@ -21,10 +21,6 @@ app.use(express.static(clientPath));
 
 app.use(cors());
 
-// app.use(cors({
-//   origin: 'https://trading-max-app.vercel.app',
-//   credentials: true
-// }));
 
 // =========================================
 
